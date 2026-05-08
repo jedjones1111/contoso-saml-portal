@@ -14,11 +14,10 @@ def init_saml_auth(req):
     return auth
 
 def prepare_flask_request(request):
-    url_data = request.url.split('?')
     return {
-        'https': 'on' if request.scheme == 'https' else 'off',
-        'http_host': request.host,
-        'server_port': request.environ.get('SERVER_PORT', '443'),
+        'https': 'on',
+        'http_host': request.host.split(':')[0],
+        'server_port': '443',
         'script_name': request.path,
         'get_data': request.args.copy(),
         'post_data': request.form.copy(),

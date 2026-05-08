@@ -35,7 +35,7 @@ def index():
 def login():
     req = prepare_flask_request(request)
     auth = init_saml_auth(req)
-    return redirect(auth.login())
+     return redirect(auth.login(requestedAuthnContext=False))
 
 @app.route('/saml/acs', methods=['POST'])
 def saml_acs():

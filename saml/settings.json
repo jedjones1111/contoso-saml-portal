@@ -1,0 +1,30 @@
+{
+  "strict": true,
+  "debug": false,
+  "sp": {
+    "entityId": "https://contoso-saml-portal-gwcxardmh0cnccen.canadacentral-01.azurewebsites.net/saml/metadata",
+    "assertionConsumerService": {
+      "url": "https://contoso-saml-portal-gwcxardmh0cnccen.canadacentral-01.azurewebsites.net/saml/acs",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    },
+    "singleLogoutService": {
+      "url": "https://contoso-saml-portal-gwcxardmh0cnccen.canadacentral-01.azurewebsites.net/logout",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
+    "x509cert": "",
+    "privateKey": ""
+  },
+  "idp": {
+    "entityId": "https://sts.windows.net/aa3331fc-1d02-4b13-b495-1a9e2429d98d/",
+    "singleSignOnService": {
+      "url": "https://login.microsoftonline.com/aa3331fc-1d02-4b13-b495-1a9e2429d98d/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "singleLogoutService": {
+      "url": "https://login.microsoftonline.com/aa3331fc-1d02-4b13-b495-1a9e2429d98d/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "MIIC/jCCAeagAwIBAgIJANgP5GHGfLAIMA0GCSqGSIb3DQEBCwUAMC0xKzApBgNVBAMTImFjY291bnRzLmFjY2Vzc2NvbnRyb2wud2luZG93cy5uZXQwHhcNMjYwMzIwMTMwMjM5WhcNMzEwMzIwMTMwMjM5WjAtMSswKQYDVQQDEyJhY2NvdW50cy5hY2Nlc3Njb250cm9sLndpbmRvd3MubmV0MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArxaguAYf6s4Vtqw1ivhW2p7o1gYt7r8AGI7HILOCH56TStL2N/GnNkRFsxEP8Y7kfEDXcZODwvmyftr2JpBG2d62EpRP64QtYUbSaCcZHmzyDAkj35EQtn0QAHhw4Vdf8bFf/asGzd4O7TgQjoQ76ZFfNDRHBCinu+PjvDk7ZMcjb4QJdsBIAWjjPUgR3vHrE9hfAd3NLRgQSLKpmqAMY+v8K/SKo/gGebd79oK0SmZUTmUMI5wpl4czBHcf7NBBHxDK6rMAFddL+EuEhqpAOf9/jMc91LzP2WioJoK3xce/VABNdpSZO+M2a5z3lgIEQJZSggJnoyQk5IYaclWrcQIDAQABoyEwHzAdBgNVHQ4EFgQU0r1xE0XQbs/oE7JQbJ+aWH/z4zQwDQYJKoZIhvcNAQELBQADggEBAIvQm1sY9GbObKC6B7BKVNS+ZdoYxL1RdxH/9MCqARQKTD0dLDbAkqiQZ855otRpKFcaeEEVuvCuKIqYva/w7btp1yPWwwyUqCN9VZ6Xmd6u2wcZJ3Pa9sIiiBoFmY4gQE7KnK15WGjo/tq0pXI+TmrzpdXzFhkEUGAWRsfWD4TuRJowBN1iMeFdijRtFbm90PFyqVizAOMY+0zA6n8ZrzFsKTJsD7DIXie/d9GvWqapCYZxlKyhkFhgRZRue9mq3xDf97Qo6xblSDp9QU4xbg3hrUqtpbrlsYuamfECEG7yTt7E3ZPsBsI1SRFMj/5OEdhCyhYaesJfaBQqzrwCywA="
+  }
+}

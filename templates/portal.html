@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Contoso Document Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:#0F1F3D;--navy-light:#1e3560;--teal:#1D9E75;--teal-light:#23bf8d;
+    --teal-dim:rgba(29,158,117,0.12);--gold:#C9A84C;--off-white:#F7F8FA;
+    --text-primary:#0F1F3D;--text-secondary:#4A5568;--text-muted:#8896A8;
+    --border:rgba(15,31,61,0.10);--shadow-lg:0 12px 40px rgba(15,31,61,0.14);
+    --radius:10px;--radius-lg:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--off-white);color:var(--text-primary);min-height:100vh;display:flex;flex-direction:column;}
+  header{background:var(--navy);padding:0 40px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.18);}
+  .header-brand{display:flex;align-items:center;gap:10px;}
+  .header-brand-icon{width:32px;height:32px;background:var(--teal);border-radius:8px;display:flex;align-items:center;justify-content:center;}
+  .header-brand-icon svg{width:17px;height:17px;fill:white;}
+  .header-brand-name{font-family:'DM Serif Display',serif;font-size:1.05rem;color:white;}
+  .header-center{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.10);border-radius:8px;padding:6px 14px;font-size:0.78rem;color:rgba(255,255,255,0.6);}
+  .mdca-pill{display:flex;align-items:center;gap:6px;background:rgba(29,158,117,0.18);border:1px solid rgba(29,158,117,0.35);border-radius:20px;padding:3px 10px;font-size:0.70rem;font-weight:600;color:var(--teal-light);letter-spacing:0.04em;text-transform:uppercase;}
+  .mdca-dot{width:5px;height:5px;border-radius:50%;background:var(--teal-light);animation:pulse 2s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+  .header-user{display:flex;align-items:center;gap:10px;}
+  .user-avatar{width:34px;height:34px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:600;color:white;}
+  .user-info{text-align:right;}
+  .user-name{font-size:0.82rem;font-weight:500;color:white;}
+  .user-email{font-size:0.70rem;color:rgba(255,255,255,0.45);}
+  .btn-signout{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);border-radius:6px;padding:5px 12px;font-size:0.74rem;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:none;transition:all 0.2s;}
+  .btn-signout:hover{background:rgba(255,255,255,0.12);color:white;}
+  main{flex:1;padding:40px;max-width:1200px;margin:0 auto;width:100%;}
+  .page-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;}
+  .page-title h1{font-family:'DM Serif Display',serif;font-size:2rem;color:var(--navy);margin-bottom:4px;}
+  .page-title p{font-size:0.88rem;color:var(--text-muted);}
+  .filter-bar{display:flex;gap:8px;}
+  .filter-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:white;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:500;color:var(--text-secondary);cursor:pointer;transition:all 0.15s;}
+  .filter-btn.active,.filter-btn:hover{background:var(--navy);color:white;border-color:var(--navy);}
+  .mdca-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);border-radius:var(--radius-lg);padding:20px 28px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;gap:20px;position:relative;overflow:hidden;}
+  .mdca-banner::after{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(29,158,117,0.15) 0%,transparent 70%);pointer-events:none;}
+  .mdca-banner-text h3{font-size:0.85rem;font-weight:600;color:white;margin-bottom:3px;}
+  .mdca-banner-text p{font-size:0.78rem;color:rgba(255,255,255,0.50);}
+  .mdca-banner-items{display:flex;gap:16px;flex-shrink:0;}
+  .mdca-item{display:flex;align-items:center;gap:6px;font-size:0.75rem;color:rgba(255,255,255,0.55);}
+  .mdca-item-icon{width:24px;height:24px;background:rgba(29,158,117,0.2);border-radius:6px;display:flex;align-items:center;justify-content:center;}
+  .mdca-item-icon svg{width:13px;height:13px;fill:var(--teal-light);}
+  .doc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+  .doc-card{background:white;border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:box-shadow 0.2s,transform 0.2s;}
+  .doc-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px);}
+  .doc-card-top{padding:24px 24px 18px;display:flex;align-items:flex-start;gap:14px;}
+  .doc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .doc-icon svg{width:22px;height:22px;}
+  .doc-icon.word{background:#E8F0FE;}.doc-icon.word svg{fill:#1A73E8;}
+  .doc-icon.excel{background:#E6F4EA;}.doc-icon.excel svg{fill:#1E8E3E;}
+  .doc-meta{flex:1;min-width:0;}
+  .doc-name{font-size:0.88rem;font-weight:600;color:var(--navy);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .doc-dept{font-size:0.73rem;color:var(--text-muted);margin-bottom:8px;}
+  .sensitivity-tag{display:inline-flex;align-items:center;gap:4px;border-radius:4px;padding:2px 8px;font-size:0.67rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;}
+  .sensitivity-tag.confidential{background:#FEF3E2;color:#C56000;}
+  .sensitivity-tag.internal{background:#E8F0FE;color:#1557B0;}
+  .sensitivity-tag.restricted{background:#FCE8E6;color:#C5221F;}
+  .doc-card-divider{height:1px;background:var(--border);}
+  .doc-card-footer{padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+  .doc-size{font-size:0.73rem;color:var(--text-muted);}
+  .btn-download{display:flex;align-items:center;gap:6px;padding:7px 14px;background:var(--teal-dim);color:var(--teal);border:1px solid rgba(29,158,117,0.25);border-radius:6px;font-family:'DM Sans',sans-serif;font-size:0.76rem;font-weight:600;text-decoration:none;transition:all 0.15s;}
+  .btn-download:hover{background:var(--teal);color:white;border-color:var(--teal);}
+  .btn-download svg{width:13px;height:13px;}
+  #toast-container{position:fixed;bottom:28px;right:28px;z-index:9999;display:flex;flex-direction:column;gap:10px;pointer-events:none;}
+  .toast{background:var(--navy);color:white;border-radius:var(--radius);padding:14px 18px;display:flex;align-items:flex-start;gap:12px;min-width:300px;max-width:400px;box-shadow:var(--shadow-lg);animation:slideIn 0.3s ease-out;pointer-events:all;}
+  .toast.success{border-left:3px solid var(--teal);}
+  .toast.warning{border-left:3px solid var(--gold);}
+  .toast-body{flex:1;}
+  .toast-title{font-size:0.82rem;font-weight:600;margin-bottom:2px;}
+  .toast-msg{font-size:0.75rem;color:rgba(255,255,255,0.60);line-height:1.4;}
+  @keyframes slideIn{from{transform:translateX(40px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+  .mdca-overlay{position:fixed;inset:0;background:rgba(15,31,61,0.55);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;}
+  .mdca-modal{background:white;border-radius:var(--radius-lg);padding:36px 40px;max-width:440px;width:90%;text-align:center;box-shadow:var(--shadow-lg);}
+  .mdca-modal-icon{width:60px;height:60px;background:var(--teal-dim);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;}
+  .mdca-modal-icon svg{width:28px;height:28px;fill:var(--teal);}
+  .mdca-modal h2{font-family:'DM Serif Display',serif;font-size:1.35rem;color:var(--navy);margin-bottom:10px;}
+  .mdca-modal p{font-size:0.83rem;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;}
+  .mdca-label-chip{display:inline-flex;align-items:center;gap:6px;background:var(--teal-dim);border:1px solid rgba(29,158,117,0.3);border-radius:6px;padding:6px 14px;font-size:0.78rem;font-weight:600;color:var(--teal);margin-bottom:24px;}
+  .mdca-steps{text-align:left;background:var(--off-white);border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;}
+  .mdca-step{display:flex;align-items:flex-start;gap:10px;font-size:0.78rem;color:var(--text-secondary);margin-bottom:8px;line-height:1.4;}
+  .mdca-step:last-child{margin-bottom:0;}
+  .step-num{width:18px;height:18px;background:var(--teal);border-radius:50%;color:white;font-size:0.65rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  .mdca-modal-btn{width:100%;padding:12px;background:var(--navy);color:white;border:none;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:0.86rem;font-weight:500;cursor:pointer;}
+  .mdca-modal-btn:hover{background:var(--navy-light);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-brand">
+    <div class="header-brand-icon"><svg viewBox="0 0 24 24"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg></div>
+    <span class="header-brand-name">Contoso Docs</span>
+  </div>
+  <div class="header-center">
+    <span>Session proxied via</span>
+    <div class="mdca-pill"><div class="mdca-dot"></div>MDCA Active</div>
+  </div>
+  <div class="header-user">
+    <div class="user-info">
+      <div class="user-name">{{ user }}</div>
+      <div class="user-email">{{ email }}</div>
+    </div>
+    <div class="user-avatar">{{ user[:2].upper() }}</div>
+    <a href="/logout" class="btn-signout">Sign out</a>
+  </div>
+</header>
+
+<main>
+  <div class="page-header">
+    <div class="page-title">
+      <h1>Document Library</h1>
+      <p>All downloads are inspected by MDCA and labeled before delivery to your device.</p>
+    </div>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterDocs('all',this)">All</button>
+      <button class="filter-btn" onclick="filterDocs('word',this)">Word</button>
+      <button class="filter-btn" onclick="filterDocs('excel',this)">Excel</button>
+    </div>
+  </div>
+
+  <div class="mdca-banner">
+    <div class="mdca-banner-text">
+      <h3>Microsoft Defender for Cloud Apps - Session Policy Active</h3>
+      <p>Downloads from this app are intercepted and protected with Microsoft Purview sensitivity labels before reaching your device.</p>
+    </div>
+    <div class="mdca-banner-items">
+      <div class="mdca-item"><div class="mdca-item-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>Control file download</div>
+      <div class="mdca-item"><div class="mdca-item-icon"><svg viewBox="0 0 24 24"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg></div>Apply sensitivity label</div>
+      <div class="mdca-item"><div class="mdca-item-icon"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div>Audit all activity</div>
+    </div>
+  </div>
+
+  <div class="doc-grid" id="doc-grid"></div>
+</main>
+
+<div id="toast-container"></div>
+
+<div id="mdca-overlay" style="display:none;" class="mdca-overlay" onclick="closeOverlay()">
+  <div class="mdca-modal" onclick="event.stopPropagation()">
+    <div class="mdca-modal-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg></div>
+    <h2>MDCA: Label Applied</h2>
+    <p>Microsoft Defender for Cloud Apps intercepted your download request. The file has been protected with a Microsoft Purview sensitivity label before delivery.</p>
+    <div class="mdca-label-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z"/></svg><span id="overlay-label-text">Confidential</span></div>
+    <div class="mdca-steps">
+      <div class="mdca-step"><div class="step-num">1</div><div>Session policy matched: <strong>Contoso Docs - Label on Download</strong></div></div>
+      <div class="mdca-step"><div class="step-num">2</div><div>File type inspected and label eligibility confirmed</div></div>
+      <div class="mdca-step"><div class="step-num">3</div><div>Sensitivity label applied via Microsoft Purview Information Protection</div></div>
+      <div class="mdca-step"><div class="step-num">4</div><div>Download delivered. Activity logged to MDCA audit trail.</div></div>
+    </div>
+    <button class="mdca-modal-btn" id="overlay-continue-btn" onclick="completeDownload()">Continue &amp; Download File</button>
+  </div>
+</div>
+
+<script>
+let pendingFile = null;
+
+const DOCS = [
+  { name:'Q2 Financial Summary',     dept:'Finance',          type:'word',  size:'9.7 KB', sensitivity:'confidential', label:'Confidential - Finance',     file:'Q2-Financial-Summary.docx' },
+  { name:'Employee Handbook 2025',   dept:'Human Resources',  type:'word',  size:'9.5 KB', sensitivity:'internal',     label:'Internal Use Only',           file:'Employee-Handbook-2025.docx' },
+  { name:'Revenue Forecast Model',   dept:'Finance',          type:'excel', size:'5.7 KB', sensitivity:'confidential', label:'Confidential - Finance',     file:'Revenue-Forecast-Model.xlsx' },
+  { name:'Vendor Contract Template', dept:'Legal',            type:'word',  size:'9.6 KB', sensitivity:'restricted',   label:'Highly Confidential',         file:'Vendor-Contract-Template.docx' },
+  { name:'IT Security Policy',       dept:'IT',               type:'word',  size:'9.6 KB', sensitivity:'internal',     label:'Internal Use Only',           file:'IT-Security-Policy.docx' },
+  { name:'Headcount Planning Model', dept:'Finance',          type:'excel', size:'5.7 KB', sensitivity:'restricted',   label:'Highly Confidential',         file:'Headcount-Planning-Model.xlsx' },
+  { name:'Customer Success Report',  dept:'Customer Success', type:'word',  size:'9.7 KB', sensitivity:'confidential', label:'Confidential - Client Data', file:'Customer-Success-Report.docx' },
+  { name:'Data Retention Schedule',  dept:'Legal',            type:'word',  size:'9.6 KB', sensitivity:'internal',     label:'Internal Use Only',           file:'Data-Retention-Schedule.docx' },
+];
+
+const TYPE_ICONS = {
+  word:'<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>',
+  excel:'<svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 14l-2-3-2 3H7l3-4.5L7 7h2l2 3 2-3h2l-3 4.5 3 4.5h-2zm0-11V3.5L18.5 9H13z"/></svg>',
+};
+const DL_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>';
+
+function renderDocs(filter='all') {
+  const grid = document.getElementById('doc-grid');
+  const filtered = filter==='all' ? DOCS : DOCS.filter(d=>d.type===filter);
+  grid.innerHTML = filtered.map(doc => `
+    <div class="doc-card">
+      <div class="doc-card-top">
+        <div class="doc-icon ${doc.type}">${TYPE_ICONS[doc.type]}</div>
+        <div class="doc-meta">
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-dept">${doc.dept}</div>
+          <span class="sensitivity-tag ${doc.sensitivity}">${doc.label}</span>
+        </div>
+      </div>
+      <div class="doc-card-divider"></div>
+      <div class="doc-card-footer">
+        <span class="doc-size">${doc.size}</span>
+        <button class="btn-download" onclick="handleDownload('${doc.name}','${doc.label}','${doc.file}')">
+          ${DL_ICON} Download
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterDocs(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDocs(type);
+}
+
+function handleDownload(fileName, label, file) {
+  pendingFile = file;
+  showToast('warning', 'MDCA: Intercepting Download', `Session policy matched. Applying label to "${fileName}"...`);
+  setTimeout(() => {
+    document.getElementById('overlay-label-text').textContent = label;
+    document.getElementById('mdca-overlay').style.display = 'flex';
+  }, 1400);
+}
+
+function completeDownload() {
+  document.getElementById('mdca-overlay').style.display = 'none';
+  if (pendingFile) {
+    // Real HTTP GET to /files/filename - this is what MDCA intercepts
+    const a = document.createElement('a');
+    a.href = '/files/' + pendingFile;
+    a.download = pendingFile;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    pendingFile = null;
+    showToast('success', 'Download Complete', 'File delivered with sensitivity label applied. Activity logged to MDCA.');
+  }
+}
+
+function closeOverlay() {
+  document.getElementById('mdca-overlay').style.display = 'none';
+  pendingFile = null;
+}
+
+function showToast(type, title, msg) {
+  const colorMap = {success:'#1D9E75', warning:'#C9A84C'};
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+  container.appendChild(toast);
+  setTimeout(()=>toast.remove(), 5500);
+}
+
+// Show welcome toast on load
+window.onload = () => {
+  renderDocs();
+  setTimeout(()=>showToast('success','Authenticated via Entra ID','SAML session established. MDCA session policy is active.'),600);
+  setTimeout(()=>showToast('warning','MDCA Session Policy Enforced','All downloads from this portal will have sensitivity labels applied before delivery.'),2200);
+};
+</script>
+</body>
+</html>

@@ -1,5 +1,5 @@
 {
-  "strict": true,
+  "strict": false,
   "debug": false,
   "sp": {
     "entityId": "https://contoso-saml-portal-gwcxardmh0cnccen.canadacentral-01.azurewebsites.net/saml/metadata",
